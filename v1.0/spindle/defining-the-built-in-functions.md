@@ -9,7 +9,6 @@ hidden:
 keywords: 
 tags: 
 ---
-````markdown
 # Built-in Functions
 
 This section documents the `BuiltInFunction` class, which serves as a blueprint for functions pre-defined and available in the language, as well as the specific implementations of these built-in functions.
@@ -28,8 +27,7 @@ The `BuiltInFunction` class inherits from `BaseFunction` (which is not provided 
 **Explanation:**
 ```python
 super().__init__(name)
-````
-
+```
 Calls the constructor of the `BaseFunction` class, passing the `name` to initialize common function attributes.
 
 ### `execute(self, args)`
