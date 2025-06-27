@@ -929,5 +929,3 @@ A generic helper method for parsing **binary operations** (operations with two o
 
 -----
 
-```
-```
