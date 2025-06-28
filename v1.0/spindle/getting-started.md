@@ -10,74 +10,139 @@ keywords:
 tags: 
 ---
 
-Learn how to use DeveloperHub using our step-by-step guide:
+<div align="center">
+  <img src="https://cdn.glitch.global/e1bb975a-9da8-4eb1-bcd1-68066f8e9cd4/thumbnails%2Flogo-no-background.png?1734132398879" style="height: 200px; padding: 20px" alt="Spindle Logo"/>
+  <h1><b>Spindle</b></h1>
+  <p style="font-size: 16px; font-weight: bold;">
+    The open-source programming language and learning platform for mastering AP CSP code—<br>
+    Practice, experiment, and learn with real, runnable code inspired by the AP Computer Science Principles exam.<br>
+    <br>
+    ⭐ <b>Star us, it motivates us a lot!</b>
+  </p>
+</div>
 
-{% html %}
-<!--ARCADE EMBED START-->
-<div style="position: relative; padding-bottom: calc(56.22254758418741% + 41px); height: 0; width: 100%;">
-  <iframe src="https://demo.arcade.software/mXfTOZfQRMMXPJIqWjzp?embed&embed_mobile=tab&embed_desktop=tab&show_copy_link=true" 
-          title="How to Edit and Publish Updates in DeveloperHub Documentation" 
-          frameborder="0" loading="lazy" 
-          webkitallowfullscreen mozallowfullscreen allowfullscreen 
-          allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" 
-          onload="window.postMessage('resize', '*')" ></iframe>
-</div><!--ARCADE EMBED END-->
-{% /html %}
+---
 
-Click here and start editing your documentation.
+> **Spindle** bridges the gap between AP® CSP theory and hands-on programming. Work with live code that mirrors exam syntax and logic—online or natively on your desktop, for free, forever.
 
-## Formatting
-You can highlight sentences and format them on the go (bold, italics, headings and so). You can also use the usual keyboard shortcuts: Ctrl/⌘+B, Ctrl/⌘+I. Hit Ctrl/⌘+/ to see all possible combinations.
+---
 
-{% image url="https://uploads.developerhub.io/prod/02/r09kzcr7u2vusptm6uj2itmv7tg7wu32fs07xdmezswz6zqwv01a31vn98pmvrd2.png" mode="responsive" height="182" width="930" %}
-{% /image %}
+## 🚀 Table of Contents
 
-## Markdown
-You can write markdown directly, and we'll transform it right away to what you are used to! 🚀
+- [✨ Why Spindle?](#-why-spindle)
+- [💡 Core Principles](#-core-principles)
+- [💻 Sample Code](#-sample-code)
+- [🔨 How To Use](#-how-to-use)
+  - [Quick Start (In Your Browser)](#quick-start-in-your-browser)
+  - [Native/Desktop Usage](#nativemethod-running-on-desktop)
+- [🚂 Contributing](#-want-to-contribute)
+- [🌐 Community & Support](#-community--support)
+- [🧑‍⚖️ Legal Stuff](#-legal-stuff)
 
-## Linking Pages
-To reference other pages in your documentation, use `@` to start linking.
+---
 
-## Blocks
-There are many in-page blocks that you can try which will make your documentation richer, just type {% key key=" /" /%}. Go have a look! 👇
+## ✨ Why Spindle?
 
-{% image url="https://uploads.developerhub.io/prod/02/ek4dchom06zasu70pblhjmnn80svgue7v9mws01hir8t8bgcy26148e2ou9dkhcq.png" mode="responsive" height="914" width="540" %}
-{% /image %}
+- **Exam-Ready:** Get comfortable with AP CSP-style questions and code in an environment that mimics the real exam.
+- **Accessible for Everyone:** Use Spindle on almost any device—no installation needed for web usage!
+- **Free & Open Source:** We believe learning should be accessible to all. No paywalls, ever.
+- **Community-Powered:** Spindle is built by and for students, educators, and enthusiasts. We welcome your ideas, bug reports, and contributions.
 
-### Code
-You can write code by inserting the code block plugin either manually or by using markdown's syntax for fenced code block.
+---
 
-{% code %}
-{% tab language="javascript" %}
-console.log("Hello World");
-{% /tab %}
-{% tab language="python" %}
-print("Hello World!")
-{% /tab %}
-{% tab language="go" %}
-package main
+## 💡 Core Principles
 
-import "fmt" 
+1. **Quality:** Spindle code is designed to look and function as close as possible to the AP CSP exam experience.
+2. **Simplicity:** We make learning core computer science principles easy for all students, regardless of background.
+3. **Affordability:** Spindle is—and always will be—100% free. No expensive textbooks or subscriptions required.
+4. **Transparency:** Our project is fully open-source. Everything from our code to our roadmap is public and community-driven.
+5. **Accessibility:** Not everyone has the latest laptop or is familiar with command lines. Spindle runs in your browser or on nearly any desktop.
 
-func main() {
-     fmt.Println("hello world")
-}
-{% /tab %}
-{% /code %}
+---
 
-### Images & Videos
-Do you see all the images here? They were uploaded by using the plugin! You can also embed YouTube videos.
+## 💻 Sample Code
 
-## Sidebar
-To your 👈, you will find the sidebar where you can set up your project and account settings, as well to add more versions and documentation.
+```spindle
+# Displays "Hello Spindle!"
+DISPLAY("Hello Spindle!")
+```
 
-## Logo and Colour
-Up there 👆, you can add navigation links, change the logo, favicon, as well as the main colour of your documentation (make sure it is colourful enough 🌈).
+---
 
-## Publishing Documentation
-You can publish the version of the documentation and all the documentation that belong to it from the sidebar on the left 👈. Just choose the version and click on "Publish to Public". It will be immediately available 🚀.
+## 🔨 How To Use
 
-Then, you can view your published documentation by going to your subdomain [spindle.developerhub.io](https://spindle.developerhub.io), or by the shortcuts in the sidebar.
+**Spindle can be run online in your browser or natively on your desktop. Choose what’s easiest for you!**
 
-## Need More Help?
-You can talk to us directly through "Let's Talk" button in the bottom left, or see the documentation at [docs.developerhub.io](https://docs.developerhub.io).
+### Quick Start (In Your Browser)
+
+1. **Visit Spindle's website:** [https://spdl.glitch.me/code](https://spdl.glitch.me/code)
+2. **Type your code** in the "Code Input" box (try the sample above if you’re new!)
+3. **Click the Run button** to see your code in action.
+
+### Native Method (Running on Desktop)
+
+1. **Download Spindle:**
+   - Go to our [Releases page](https://github.com/matthewl580/Spindle/releases) and download `Spindle.py` and `shell.py`.
+   - Make sure you also have Python installed ([Download Python](https://www.python.org/downloads/)).
+
+2. **Create a Project Folder:**
+   - Make a new folder (name it anything you like) for your Spindle files.
+
+3. **Extract Spindle Files:**
+   - Put `Spindle.py` and `shell.py` in your folder.
+
+4. **Write Your Spindle Code:**
+   - Make a new text file ending in `.spdl` (e.g., `my_first_program.spdl`) and write your code.
+
+5. **Run Your Code:**
+   - **Simple Method:**  
+     - Run `shell.py` (double-click or use Python).
+     - Type `RUN("[FILENAME].spdl")` (replace `[FILENAME]` with your code file).
+   - **Advanced Method:**  
+     - Open a terminal or command prompt.
+     - Use `cd` to go to your folder.
+     - Run:
+       ```bash
+       python shell.py RUN("[FILENAME].spdl")
+       ```
+
+---
+
+## 🚂 Want to Contribute?
+
+Open source means everyone can help!  
+- **Found a bug?** Report it in [issues](https://github.com/matthewl580/Spindle/issues)—it helps us make Spindle better.
+- **Have coding skills?** Help us add features, fix bugs, or improve documentation.
+- **Not sure where to start?** Check [Good First Issues](https://github.com/matthewl580/Spindle/labels/good%20first%20issue) or [CONTRIBUTING.md](https://github.com/matthewl580/Spindle/blob/main/CONTRIBUTING.md).
+
+We appreciate all contributions—big or small. Contributors are always credited!
+
+---
+
+## 🌐 Community & Support
+
+- [Website](https://spdl.netlify.app/)
+- [GitHub Discussions](https://github.com/matthewl580/Spindle/discussions)
+- [Releases](https://github.com/matthewl580/Spindle/releases)
+- [Documentation](https://github.com/matthewl580/Spindle/wiki)
+- [Contact](mailto:your-email@example.com) <!-- Replace with project contact if available -->
+
+> **Tip:** Have a question? Ask in [Discussions](https://github.com/matthewl580/Spindle/discussions) or open an issue.
+
+---
+
+## 🧑‍⚖️ Legal Stuff
+
+The Spindle programming language, website, logo, and brand are licensed under the MIT License.  
+You fully own all programs you create with Spindle. For more, see the [LICENSE](./LICENSE) file or ask us!
+
+> **Disclaimer:**  
+> "AP CSP" refers to "AP® Computer Science Principles", a trademark of College Board. This project is not affiliated with, endorsed by, or sponsored by College Board.  
+> AP® is a trademark registered by the College Board, which is not affiliated with, and does not endorse, this project.
+
+---
+
+<div align="center">
+  <b>Spindle: Making AP CSP coding accessible, real, and fun for everyone.<br>
+  💡 Join us and shape the next generation of computer science education!</b>
+</div>
