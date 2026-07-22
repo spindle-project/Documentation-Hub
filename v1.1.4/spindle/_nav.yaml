@@ -1,0 +1,18 @@
+items:
+  - home-page
+  - category: "From Text to Code: Spindle's Execution Process"
+    items:
+      - getting-started-with-spindle
+      - the-pre-processer
+      - the-lexer
+      - the-parser
+      - interpreter
+      - the-run-command-and-function
+  - category: 'Handling Functions'
+    items:
+      - functions--base-function-and-function-class
+      - defining-the-built-in-functions
+  - category: "The Value Class and it's Subclasses"
+    items:
+      - other-values--strings-and-lists
+      - the-value-and-number-classes

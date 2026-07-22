@@ -1,0 +1,6 @@
+name: v1.1.4
+published: true
+documentations:
+    - spindle
+references:
+    - swagger-petstore---openapi-3.0

@@ -2,10 +2,9 @@
 type: page
 title: The Interpreter: From Tokens to Results
 listed: true
-slug: interpreter
 description: 
 index_title: The Interpreter: From Tokens to Results
-hidden: 
+hidden: false
 keywords: 
 tags: 
 ---
@@ -29,21 +28,19 @@ The `Interpreter` class utilizes a visitor pattern to handle different types of 
 
 **Explanation:**
 
-1. **Method Name Construction:**
-    method_name = f'visit_{type(node).__name__}'
-    
+1. **Method Name Construction:** method\_name = f'visit\_\{type(node).**name**\}'
 
 This line dynamically constructs the name of the method to be called. For example, if `node` is an instance of a `NumberNode` class, `type(node).__name__` will be `'NumberNode'`, and `method_name` will become `'visit_NumberNode'`. This is a core part of the visitor pattern.
 
 2. **Attribute Retrieval:**
 
-    method = getattr(self, method_name, self.no_visit_method)
+   method = getattr(self, method\_name, self.no\_visit\_method)
 
 `getattr()` attempts to retrieve the method with the constructed `method_name` from the `Interpreter` instance (`self`). If a method with that name is not found, it defaults to `self.no_visit_method`.
 
 3. **Method Invocation:**
 
-    return method(node, context)
+   return method(node, context)
 
 The retrieved method (either the specific `visit_` method or `no_visit_method`) is then called with the `node` and `context` as arguments, and its result is returned.
 
@@ -59,9 +56,9 @@ The retrieved method (either the specific `visit_` method or `no_visit_method`) 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 raise Exception(f'No visit_{type(node).__name__} method defined')
-{% /tab %}
+```
 {% /code %}
 
 If this method is called, it means the interpreter does not know how to handle the given `node` type. It raises an `Exception` with an informative message, indicating which `visit_` method is missing. This is crucial for debugging during the development of the interpreter.
@@ -84,11 +81,11 @@ The following methods implement the interpretation logic for different types of 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return RTResult().success(
     Number(node.value).set_context(context).set_pos(node.pos_start, node.pos_end)
 )
-{% /tab %}
+```
 {% /code %}
 
 This method directly takes the `value` from the `Number` node, wraps it in a `Number` object (presumably a custom value class that holds context and position), sets its context and position, and returns it as a successful `RTResult`.
@@ -105,11 +102,11 @@ This method directly takes the `value` from the `Number` node, wraps it in a `Nu
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return RTResult().success(
     Number(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end)
 )
-{% /tab %}
+```
 {% /code %}
 
 Similar to `visit_Number`, but it extracts the numerical value from `node.tok.value`. This suggests that the AST might have different representations for numbers (e.g., `Number` for internal representation and `NumberNode` for parsed literals).
@@ -126,11 +123,11 @@ Similar to `visit_Number`, but it extracts the numerical value from `node.tok.va
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return RTResult().success(
     String(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end)
 )
-{% /tab %}
+```
 {% /code %}
 
 Extracts the string value from `node.tok.value`, wraps it in a `String` object (a custom value class), sets its context and position, and returns it as a successful `RTResult`.
@@ -147,7 +144,7 @@ Extracts the string value from `node.tok.value`, wraps it in a `String` object (
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 elements = []
 
@@ -158,7 +155,7 @@ for element_node in node.element_nodes:
 return res.success(
     List(elements).set_context(context).set_pos(node.pos_start, node.pos_end)
 )
-{% /tab %}
+```
 {% /code %}
 
 1. Initializes an `RTResult` and an empty list `elements`.
@@ -179,7 +176,7 @@ return res.success(
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 var_name = node.var_name_tok.value
 value = context.symbol_table.get(var_name)
@@ -193,7 +190,7 @@ if not value:
 else:
     value = value.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
     return res.success(value)
-{% /tab %}
+```
 {% /code %}
 
 1. Retrieves the variable name from `node.var_name_tok.value`.
@@ -213,7 +210,7 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 var_name = node.var_name_tok.value
 value = res.register(self.visit(node.value_node, context))
@@ -222,7 +219,7 @@ if res.should_return(): return res
 
 context.symbol_table.set(var_name, value)
 return res.success(value)
-{% /tab %}
+```
 {% /code %}
 
 1. Retrieves the variable name.
@@ -243,7 +240,7 @@ return res.success(value)
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 left = res.register(self.visit(node.left_node, context))
 if res.should_return(): return res
@@ -271,12 +268,12 @@ if error:
     return res.failure(error)
 else:
     return res.success(result.set_pos(node.pos_start, node.pos_end))
-{% /tab %}
+```
 {% /code %}
 
 1. **Operand Evaluation:** Recursively `visits` the `left_node` and `right_node` to get their evaluated values. `res.register()` handles potential errors.
 2. **Operation Dispatch:** Based on the type of the `node.op_tok` (e.g., `TT_PLUS`, `TT_EE`, `TT_KEYWORD` for "AND"), it calls the corresponding method on the `left` operand (`added_to`, `subbed_by`, `get_comparison_eq`, `anded_by`, etc.). These methods (presumably defined on the `Number`, `String`, `List` value classes) perform the actual operation and return a `result` and an `error` if any.
-3. **`NOT` Operator:** The `elif node.op_tok.matches(TT_KEYWORD, "NOT")` condition is somewhat unusual for a `BinOpNode`. `NOT` is typically a unary operator. This might indicate a structural design choice in the AST or an oversight.
+3. **NOT Operator:** The `elif node.op_tok.matches(TT_KEYWORD, "NOT")` condition is somewhat unusual for a `BinOpNode`. `NOT` is typically a unary operator. This might indicate a structural design choice in the AST or an oversight.
 4. **Error/Success Return:** If an `error` occurred during the operation, it returns an `RTResult` failure. Otherwise, it returns the `result` as a successful `RTResult`, ensuring its position is updated.
 
 ### `visit_UnaryOpNode(self, node, context)`
@@ -291,7 +288,7 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 number = res.register(self.visit(node.node, context))
 if res.should_return(): return res
@@ -307,7 +304,7 @@ if error:
     return res.failure(error)
 else:
     return res.success(number.set_pos(node.pos_start, node.pos_end))
-{% /tab %}
+```
 {% /code %}
 
 1. **Operand Evaluation:** Recursively `visits` the `node.node` to evaluate the operand's value. `res.register()` handles potential errors.
@@ -330,7 +327,7 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 for condition, expr, should_return_null in node.cases:
     condition_value = res.register(self.visit(condition, context))
@@ -348,7 +345,7 @@ if node.else_case:
     return res.success(Number.null if should_return_null else else_value)
 
 return res.success(Number.null)
-{% /tab %}
+```
 {% /code %}
 
 1. **Iterate Cases:** Loops through each `(condition, expr, should_return_null)` tuple in `node.cases` (representing `if` and `elif` blocks).
@@ -371,9 +368,9 @@ return res.success(Number.null)
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 pass
-{% /tab %}
+```
 {% /code %}
 
 This method is explicitly noted as doing nothing. The comment explains that when the interpreter encounters a number, it looks for `visit_int`. This implies a potential mismatch or a redundant method, as `visit_Number` and `visit_NumberNode` already handle numbers. This `visit_int` might be intended for direct Python `int` objects if they somehow enter the AST directly, which is less common in typical AST designs.
@@ -390,7 +387,7 @@ This method is explicitly noted as doing nothing. The comment explains that when
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 elements = []
 
@@ -430,7 +427,7 @@ return res.success(
     Number.null if node.should_return_null else
     List(elements).set_context(context).set_pos(node.pos_start, node.pos_end)
 )
-{% /tab %}
+```
 {% /code %}
 
 1. **Initialization:** Initializes `start_value` to `Number(0)`. Evaluates `end_value` and `step_value` (defaulting to 1 if not provided).
@@ -459,7 +456,7 @@ return res.success(
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 elements = []
 
@@ -482,7 +479,7 @@ return res.success(
     Number.null if node.should_return_null else
     List(elements).set_context(context).set_pos(node.pos_start, node.pos_end)
 )
-{% /tab %}
+```
 {% /code %}
 
 1. **Loop Execution:** Enters an infinite `while True` loop.
@@ -505,7 +502,7 @@ return res.success(
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 
 func_name = node.var_name_tok.value if node.var_name_tok else None
@@ -517,7 +514,7 @@ if node.var_name_tok:
     context.symbol_table.set(func_name, func_value)
 
 return res.success(func_value)
-{% /tab %}
+```
 {% /code %}
 
 1. **Extract Function Details:** Retrieves the function name (if provided), the body node, and a list of argument names.
@@ -537,7 +534,7 @@ return res.success(func_value)
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 args = []
 
@@ -553,7 +550,7 @@ return_value = res.register(value_to_call.execute(args))
 if res.should_return(): return res
 return_value = return_value.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
 return res.success(return_value)
-{% /tab %}
+```
 {% /code %}
 
 1. **Evaluate Function to Call:** Recursively `visits` `node.node_to_call` to get the actual function object to be invoked. `res.register()` handles errors.
@@ -574,7 +571,7 @@ return res.success(return_value)
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 if node.node_to_return:
     value = res.register(self.visit(node.node_to_return, context))
@@ -582,7 +579,7 @@ if node.node_to_return:
 else:
     value = Number.null # Default return value if no expression is provided
 return res.success_return(value)
-{% /tab %}
+```
 {% /code %}
 
 1. **Evaluate Return Value:** If `node.node_to_return` exists, it recursively `visits` it to get the value to be returned. `res.register()` handles errors.
@@ -601,9 +598,9 @@ return res.success_return(value)
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return RTResult().success_continue()
-{% /tab %}
+```
 {% /code %}
 
 Returns an `RTResult` that specifically sets the `loop_should_continue` flag, signaling to the enclosing loop interpreter (e.g., `visit_ForNode`, `visit_WhileNode`) to skip the rest of the current iteration and proceed to the next.
@@ -620,9 +617,9 @@ Returns an `RTResult` that specifically sets the `loop_should_continue` flag, si
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return RTResult().success_break()
-{% /tab %}
+```
 {% /code %}
 
 Returns an `RTResult` that specifically sets the `loop_should_break` flag, signaling to the enclosing loop interpreter to exit the loop entirely.

@@ -2,10 +2,9 @@
 type: page
 title: Children of the Value Class: Strings and Lists Classes
 listed: true
-slug: other-values--strings-and-lists
 description: 
 index_title: Children of the Value Class: Strings and Lists Classes
-hidden: 
+hidden: false
 keywords: 
 tags: 
 ---
@@ -29,11 +28,11 @@ The `String` class encapsulates textual data. It inherits from `Value` and imple
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 super().__init__()
 self.value = value
 `
-{% /tab %}
+```
 {% /code %}
 
 Calls the `Value` class constructor to set up position and context, then stores the provided Python `value` (the actual string content) in `self.value`.
@@ -49,12 +48,12 @@ Calls the `Value` class constructor to set up position and context, then stores 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 if isinstance(other, String):
     return String(self.value + other.value).set_context(self.context), None
 else:
     return None, Value.illegal_operation(self, other)
-{% /tab %}
+```
 {% /code %}
 
 1. **Type Check:** Verifies that `other` is also a `String` instance.
@@ -72,12 +71,12 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 if isinstance(other, Number):
     return String(self.value * other.value).set_context(self.context), None
 else:
     return None, Value.illegal_operation(self, other)
-{% /tab %}
+```
 {% /code %}
 
 1. **Type Check:** Verifies that `other` is a `Number` instance.
@@ -93,9 +92,9 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return len(self.value) > 0
-{% /tab %}
+```
 {% /code %}
 
 A `String` is considered "true" if its underlying Python string `self.value` has a length greater than zero (i.e., it's not an empty string). This aligns with Python's truthiness rules for strings.
@@ -109,12 +108,12 @@ A `String` is considered "true" if its underlying Python string `self.value` has
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 copy = String(self.value)
 copy.set_pos(self.pos_start, self.pos_end)
 copy.set_context(self.context)
 return copy
-{% /tab %}
+```
 {% /code %}
 
 Creates a new `String` object with the same underlying `value`, and then copies its position and context from the original instance.
@@ -128,9 +127,9 @@ Creates a new `String` object with the same underlying `value`, and then copies 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return self.value
-{% /tab %}
+```
 {% /code %}
 
 Directly returns the encapsulated Python string `self.value`. This means that when a `String` object is printed, only its raw content is displayed, without quotation marks.
@@ -144,9 +143,9 @@ Directly returns the encapsulated Python string `self.value`. This means that wh
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return f'"{self.value}"'
-{% /tab %}
+```
 {% /code %}
 
 Returns a string representation that includes double quotes around the `self.value`. This helps distinguish string values from other types when inspecting them (e.g., in a debugger or interactive shell).
@@ -168,10 +167,10 @@ The `List` class encapsulates ordered collections of `Value` objects, analogous 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 super().__init__()
 self.elements = elements
-{% /tab %}
+```
 {% /code %}
 
 Calls the `Value` class constructor to set up position and context, then stores the provided `elements` list in `self.elements`. This `self.elements` is the internal Python list that holds the actual `Value` objects.
@@ -187,11 +186,11 @@ Calls the `Value` class constructor to set up position and context, then stores 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 new_list = self.copy()
 new_list.elements.append(other)
 return new_list, None
-{% /tab %}
+```
 {% /code %}
 
 1. **Create Copy:** Creates a `copy` of the current `List` instance. This is crucial to ensure that the original list is not modified (lists are mutable, so operations should ideally return a new list if immutability is desired, or explicitly modify in-place if that's the language's design).
@@ -209,7 +208,7 @@ return new_list, None
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 if isinstance(other, Number):
     new_list = self.copy()
     try:
@@ -223,7 +222,7 @@ if isinstance(other, Number):
         )
 else:
     return None, Value.illegal_operation(self, other)
-{% /tab %}
+```
 {% /code %}
 
 1. **Type Check:** Verifies that `other` is a `Number` (representing the index).
@@ -246,14 +245,14 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 if isinstance(other, List):
     new_list = self.copy()
     new_list.elements.extend(other.elements)
     return new_list, None
 else:
     return None, Value.illegal_operation(self, other)
-{% /tab %}
+```
 {% /code %}
 
 1. **Type Check:** Verifies that `other` is also a `List` instance.
@@ -272,7 +271,7 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 if isinstance(other, Number):
     try:
         return self.elements[other.value-1], None # Adjust for 1-based indexing
@@ -284,7 +283,7 @@ if isinstance(other, Number):
         )
 else:
     return None, Value.illegal_operation(self, other)
-{% /tab %}
+```
 {% /code %}
 
 1. **Type Check:** Verifies that `other` is a `Number` (representing the index).
@@ -304,15 +303,15 @@ else:
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 copy = List(self.elements) # This is a shallow copy of the 'elements' list.
 copy.set_pos(self.pos_start, self.pos_end)
 copy.set_context(self.context)
 return copy
-{% /tab %}
+```
 {% /code %}
 
-Creates a new `List` object. **Important Note:** `List(self.elements)` performs a _shallow copy_ of the underlying Python list of elements. This means the new list (`copy.elements`) will contain references to the _same_ `Value` objects as the original list. If these `Value` objects are mutable (e.g., other `List` objects), changes to them in the copy will affect the original, and vice-versa. For a true deep copy (where all nested `Value` objects are also copied), a more involved copying mechanism would be needed. It then copies its position and context.
+Creates a new `List` object. **Important Note:** `List(self.elements)` performs a *shallow copy* of the underlying Python list of elements. This means the new list (`copy.elements`) will contain references to the *same* `Value` objects as the original list. If these `Value` objects are mutable (e.g., other `List` objects), changes to them in the copy will affect the original, and vice-versa. For a true deep copy (where all nested `Value` objects are also copied), a more involved copying mechanism would be needed. It then copies its position and context.
 
 ### `__repr__(self)`
 
@@ -323,9 +322,9 @@ Creates a new `List` object. **Important Note:** `List(self.elements)` performs 
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return ", ".join([str(x) for x in self.elements])
-{% /tab %}
+```
 {% /code %}
 
 Returns a string where each element's `str()` representation is joined by a comma and space. This is a common representation but might not include the `[]` brackets that typically denote a list.
@@ -339,9 +338,9 @@ Returns a string where each element's `str()` representation is joined by a comm
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 return f'[{", ".join([str(x) for x in self.elements])}]'
-{% /tab %}
+```
 {% /code %}
 
 Returns a formatted string that includes square brackets `[]` around the comma-separated string representations of its elements. This provides a more conventional list representation for display to the user.

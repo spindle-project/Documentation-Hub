@@ -2,10 +2,9 @@
 type: page
 title: Text to Tokens: The Lexer
 listed: true
-slug: the-lexer
 description: 
 index_title: Text to Tokens: The Lexer
-hidden: 
+hidden: false
 keywords: 
 tags: 
 ---
@@ -25,8 +24,7 @@ The `Lexer` class is responsible for taking a string of source code and breaking
 - `fn`: The filename associated with the input text. This is typically used for error reporting to indicate where an error occurred.
 - `text`: The entire string of source code to be tokenized.
 
-**Explanation:**
-This constructor sets up the initial state of the lexer:
+**Explanation:** This constructor sets up the initial state of the lexer:
 
 - `self.fn = fn`: Stores the filename.
 - `self.text = text`: Stores the input source code.
@@ -47,8 +45,7 @@ This constructor sets up the initial state of the lexer:
 
 **Purpose:** The core method of the lexer that iterates through the input text and generates a list of tokens.
 
-**Explanation:**
-This method implements the main tokenization logic. It uses a `while` loop to process characters until `self.current_char` becomes `None` (end of file).
+**Explanation:** This method implements the main tokenization logic. It uses a `while` loop to process characters until `self.current_char` becomes `None` (end of file).
 
 Inside the loop, it checks the `self.current_char` against various conditions to identify different token types:
 
@@ -59,7 +56,7 @@ Inside the loop, it checks the `self.current_char` against various conditions to
 - `elif self.current_char == '"' or self.current_char == ".": tokens.append(self.make_string())`: If the character is a double quote or a period, it calls `make_string()` to parse a string literal.
 - **Note:** The comment `# IF is not the same as "IF"` is a good reminder that string literals are distinct from keywords or identifiers. The `.` for string might be an unusual design choice or a specific language feature.
 - `elif self.current_char in LETTERS:`: This block handles identifiers and keywords.
-- **Special Handling for `R` (likely for `RUN` and `REPEAT`):**
+- **Special Handling for R (likely for RUN and REPEAT):**
 - `if self.current_char == 'R':`: This is a very specific and somewhat "janky" (as indicated by the comment) way to optimize or pre-check for keywords starting with 'R', namely `RUN` and `REPEAT`.
 - The code then checks the next characters to determine if it's "RUN" or "REPEAT". If it's "RU", it expects "N" for "RUN". If it's "RE", it expects "PEAT" for "REPEAT".
 - It uses "bypass" arguments to `make_identifier` to inject specific keyword tokens (`"RUN FUNC BYPASS"`, `"WHILE_LOOP_BYPASS"`, `"FOR_LOOP_BYPASS"`, `"FOR_LOOP_IDENITIFER_BYPASS"`) directly into the token stream based on these checks. This approach seems to tightly couple the lexer with specific keyword structures, which might be less flexible than a more general keyword lookup.
@@ -130,7 +127,7 @@ Finally, after the loop:
 **Explanation:**
 
 - `pos_start = self.pos.copy()`: Records the starting position.
-- **Bypass Logic:** This section is highly unconventional for a lexer. It explicitly checks for various "bypass" strings (`"ELSE BYPASS"`, `"RUN FUNC BYPASS"`, etc.) and returns pre-defined `Token` objects. This bypasses the normal identifier/keyword parsing logic. The `CHANGE_IN_REPEAT_LOOP()` call within the "FOR_LOOP_BYPASS" also points to global state modification, which is generally undesirable in a lexer.
+- **Bypass Logic:** This section is highly unconventional for a lexer. It explicitly checks for various "bypass" strings (`"ELSE BYPASS"`, `"RUN FUNC BYPASS"`, etc.) and returns pre-defined `Token` objects. This bypasses the normal identifier/keyword parsing logic. The `CHANGE_IN_REPEAT_LOOP()` call within the "FOR\_LOOP\_BYPASS" also points to global state modification, which is generally undesirable in a lexer.
 - `id_str = ''`: Initializes an empty string to build the identifier.
 - `while self.current_char != None and self.current_char in LETTERS_DIGITS + '_':`: Loops as long as the current character is a letter, digit, or underscore.
 - Appends the `current_char` to `id_str`.
@@ -162,7 +159,7 @@ Finally, after the loop:
 **Explanation:**
 
 - `pos_start = self.pos.copy()`: Records the starting position.
-- `return Token(TT_EE,pos_start = pos_start, pos_end = self.pos)`: Returns a `TT_EE` token. This method _assumes_ that the `self.current_char` has already been advanced past the first `=` by the `make_tokens` method.
+- `return Token(TT_EE,pos_start = pos_start, pos_end = self.pos)`: Returns a `TT_EE` token. This method *assumes* that the `self.current_char` has already been advanced past the first `=` by the `make_tokens` method.
 
 ### `make_less_than(self)`
 

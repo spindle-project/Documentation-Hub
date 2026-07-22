@@ -2,10 +2,9 @@
 type: page
 title: Functions: Base Function and Function Class
 listed: true
-slug: functions--base-function-and-function-class
 description: 
 index_title: Functions: Base Function and Function Class
-hidden: 
+hidden: false
 keywords: 
 tags: 
 ---
@@ -29,11 +28,11 @@ The `BaseFunction` class serves as the abstract base for all callable objects in
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 super().__init__()
 self.name = name or "<anonymous>"
 `
-{% /tab %}
+```
 {% /code %}
 
 1. Calls the constructor of the `Value` class (`super().__init__()`) to inherit basic value properties like position (`pos_start`, `pos_end`) and context.
@@ -48,20 +47,20 @@ self.name = name or "<anonymous>"
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 new_context = Context(self.name, self.context, self.pos_start)
 new_context.symbol_table = SymbolTable(new_context.parent.symbol_table)
 return new_context
-{% /tab %}
+```
 {% /code %}
 
-1. **Creates `Context`:** Instantiates a new `Context` object.
+1. **Creates Context:** Instantiates a new `Context` object.
 
 - The `name` of the new context is set to the function's `self.name`.
 - Its `parent` context is set to `self.context` (the context where the function was defined/declared, establishing lexical scoping).
 - Its `parent_entry_pos` is set to `self.pos_start`, indicating where the function was called or defined.
 
-2. **Creates `SymbolTable`:** Assigns a new `SymbolTable` to this `new_context`. Crucially, this `SymbolTable`'s parent is set to the `symbol_table` of its parent context (`new_context.parent.symbol_table`). This forms the **scope chain**, allowing the function to access variables from its enclosing scopes.
+2. **Creates SymbolTable:** Assigns a new `SymbolTable` to this `new_context`. Crucially, this `SymbolTable`'s parent is set to the `symbol_table` of its parent context (`new_context.parent.symbol_table`). This forms the **scope chain**, allowing the function to access variables from its enclosing scopes.
 3. Returns the newly created `new_context`.
 
 ### `check_args(self, arg_names, args)`
@@ -76,7 +75,7 @@ return new_context
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res = RTResult()
 if len(args) > len(arg_names):
     return res.failure(RTError(
@@ -92,7 +91,7 @@ if len(args) < len(arg_names):
         self.context
     ))
 return res.success(None)
-{% /tab %}
+```
 {% /code %}
 
 1. Initializes an `RTResult` to manage the outcome.
@@ -113,13 +112,13 @@ return res.success(None)
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 for i in range(len(args)):
     arg_name = arg_names[i]
     arg_value = args[i]
     arg_value.set_context(exec_ctx) # Set the context of the argument value to the new execution context
     exec_ctx.symbol_table.set(arg_name, arg_value)
-{% /tab %}
+```
 {% /code %}
 
 1. Iterates through the provided `args` and `arg_names` simultaneously (assuming `check_args` has already confirmed they have the same length).
@@ -142,13 +141,13 @@ for i in range(len(args)):
 **Explanation:**
 
 {% code %}
-{% tab language="python" %}
+```python
 res= RTResult()
 res.register(self.check_args(arg_names, args))
 if res.should_return(): return res
 self.populate_args(arg_names, args, exec_ctx)
 return res.success(None)
-{% /tab %}
+```
 {% /code %}
 
 1. Initializes an `RTResult`.
@@ -162,34 +161,34 @@ return res.success(None)
 
 The `Function` class represents user-defined functions in the language. It inherits from `BaseFunction` and adds the specific logic required to interpret and execute the function's body.
 
-_(The provided snippet only shows the class definition for `Function` and does not include its methods. Based on typical interpreter design, `Function` would override the `execute` method from `Value` (which `BaseFunction` inherits) and also define how to copy itself. A typical `Function` class would also likely store information about its body (e.g., an AST node for the function's statements) and its argument names.)_
+*(The provided snippet only shows the class definition for Function and does not include its methods. Based on typical interpreter design, Function would override the execute method from Value (which BaseFunction inherits) and also define how to copy itself. A typical Function class would also likely store information about its body (e.g., an AST node for the function's statements) and its argument names.)*
 
 ### Expected Methods for `Function`
 
 Based on the structure, `Function` would typically include:
 
-- **`__init__(self, name, body_node, arg_names, should_auto_return)`**:
+- **\_\_init\_\_(self, name, body\_node, arg\_names, should\_auto\_return)**:
 - `name`: The function's name.
 - `body_node`: The Abstract Syntax Tree (AST) node representing the function's body (the statements to execute).
 - `arg_names`: A list of strings for the formal parameter names.
 - `should_auto_return`: A boolean flag indicating if the function should implicitly return its last expression's value.
-- **`execute(self, args)`**:
+- **execute(self, args)**:
 - This is the core method for running a user-defined function.
 - It would call `self.generate_new_context()`.
 - It would then call `self.check_and_populate_args()` to set up the arguments in the new context.
 - Finally, it would typically use an `Interpreter` or `Runtime` object to visit and execute the `body_node` within the new context.
 - It would handle the return value, break/continue statements, and errors from the body's execution.
-- **`copy(self)`**:
+- **copy(self)**:
 - To create a new `Function` object with the same properties (name, body, arg names, context, position).
-- **`__repr__(self)`**:
-- To provide a string representation like `<function my_func>`. 
+- **\_\_repr\_\_(self)**:
+- To provide a string representation like `<function my_func>`.
 
-{% callout type="info" title="Info" %}
+{% callout title="Info" %}
 Here is the Function class below.
 {% /callout %}
 
 {% code %}
-{% tab language="python" %}
+```python
 # Handle functions!
 class Function(BaseFunction):
     def __init__(self, name, body_node, arg_names, should_auto_return):
@@ -220,5 +219,5 @@ class Function(BaseFunction):
 
     def __repr__(self):
         return f"<function {self.name}>"
-{% /tab %}
+```
 {% /code %}

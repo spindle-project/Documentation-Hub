@@ -2,10 +2,9 @@
 type: page
 title: The Parser: Creating an Abstract Syntax Tree
 listed: true
-slug: the-parser
 description: 
 index_title: The Parser: Creating an Abstract Syntax Tree
-hidden: 
+hidden: false
 keywords: 
 tags: 
 ---
@@ -13,14 +12,14 @@ tags:
 ## Class: `Parser`
 
 {% code %}
-{% tab language="python" %}
+```python
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.tok_idx = -1
         self.advance()
 `
-{% /tab %}
+```
 {% /code %}
 
 The `Parser` is initialized with a list of **tokens**. It maintains `tok_idx` to keep track of the current token being processed and immediately calls `advance()` to set up the initial `current_tok`.
@@ -34,12 +33,12 @@ These methods allow the parser to move through the token stream.
 #### `advance()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def advance(self):
         self.tok_idx += 1
         self.update_current_tok()
         return self.current_tok
-{% /tab %}
+```
 {% /code %}
 
 Moves the parser's internal pointer (`tok_idx`) to the next token in the stream and updates `current_tok`. This is the primary way the parser consumes tokens.
@@ -47,12 +46,12 @@ Moves the parser's internal pointer (`tok_idx`) to the next token in the stream 
 #### `reverse(amount=1)`
 
 {% code %}
-{% tab language="python" %}
+```python
 def reverse(self, amount=1):
         self.tok_idx -= amount
         self.update_current_tok()
         return self.current_tok
-{% /tab %}
+```
 {% /code %}
 
 Moves the parser's internal pointer back by a specified `amount` (defaulting to 1). This is useful for backtracking in case of parsing ambiguities or errors.
@@ -60,11 +59,11 @@ Moves the parser's internal pointer back by a specified `amount` (defaulting to 
 #### `update_current_tok()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def update_current_tok(self):
         if self.tok_idx >= 0 and self.tok_idx < len(self.tokens):
             self.current_tok = self.tokens[self.tok_idx]
-{% /tab %}
+```
 {% /code %}
 
 Internal method to update `self.current_tok` based on the current `self.tok_idx`. It ensures that the index is within the valid range of tokens.
@@ -72,10 +71,10 @@ Internal method to update `self.current_tok` based on the current `self.tok_idx`
 #### `peek(amount)`
 
 {% code %}
-{% tab language="python" %}
+```python
 def peek(self, amount):
         return self.tokens[self.tok_idx+amount]
-{% /tab %}
+```
 {% /code %}
 
 Allows the parser to look ahead in the token stream by a specified `amount` without actually advancing its position. This is useful for making parsing decisions based on upcoming tokens.
@@ -87,7 +86,7 @@ Allows the parser to look ahead in the token stream by a specified `amount` with
 #### `parse()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def parse(self):
         res = self.statements()
         # Ignore TT_EOF, TT_KEYWORD, TT_IDENTIFIER,TT_EQ,TT_RBRACE. These should not cause errors. Everything else should though!
@@ -97,7 +96,7 @@ def parse(self):
                 "Expected '+', '-', '*', '/', ,'[', '^', '==', '!=', '<', '>', <=', '>=', 'AND' or 'OR'"
             ))
         return res
-{% /tab %}
+```
 {% /code %}
 
 This is the entry point for the parsing process. It attempts to parse a sequence of **statements** and handles any remaining unexpected tokens, generating an `InvalidSyntaxError` if found.
@@ -109,7 +108,7 @@ This is the entry point for the parsing process. It attempts to parse a sequence
 #### `statement()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def statement(self):
         res = ParseResult()
         pos_start = self.current_tok.pos_start.copy()
@@ -138,7 +137,7 @@ def statement(self):
                 "Expected 'RETURN', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'NOT'"
             ))
         return res.success(expr)
-{% /tab %}
+```
 {% /code %}
 
 Parses a single statement, which can be a `RETURN`, `CONTINUE`, `BREAK`, or a general **expression**. It handles keywords for control flow and registers advancements to consume tokens.
@@ -146,7 +145,7 @@ Parses a single statement, which can be a `RETURN`, `CONTINUE`, `BREAK`, or a ge
 #### `statements()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def statements(self):
         res = ParseResult()
         statements = []
@@ -184,7 +183,7 @@ def statements(self):
         pos_start,
         self.current_tok.pos_end.copy()
         ))
-{% /tab %}
+```
 {% /code %}
 
 Parses multiple statements, handling newlines as delimiters between them. It collects individual **statement nodes** into a **list node**.
@@ -196,14 +195,14 @@ Parses multiple statements, handling newlines as delimiters between them. It col
 #### `if_expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def if_expr(self):
         res = ParseResult()
         all_cases = res.register(self.if_expr_cases('IF'))
         if res.error: return res
         cases, else_case = all_cases
         return res.success(IfNode(cases, else_case))
-{% /tab %}
+```
 {% /code %}
 
 The main entry point for parsing `IF` statements. It delegates the heavy lifting to `if_expr_cases`.
@@ -211,7 +210,7 @@ The main entry point for parsing `IF` statements. It delegates the heavy lifting
 #### `if_expr_c()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def if_expr_c(self):
         res = ParseResult()
         else_case = None
@@ -271,7 +270,7 @@ def if_expr_c(self):
                     res.register_advancement()
                     self.advance()
             return res.success(else_case)
-{% /tab %}
+```
 {% /code %}
 
 Handles the parsing of `ELSE` clauses within an `IF` statement, including optional curly braces and newlines.
@@ -279,7 +278,7 @@ Handles the parsing of `ELSE` clauses within an `IF` statement, including option
 #### `if_expr_b_or_c()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def if_expr_b_or_c(self):
         res = ParseResult()
         cases, else_case = [], None
@@ -290,7 +289,7 @@ def if_expr_b_or_c(self):
             else_case = res.register(self.if_expr_c())
             if res.error: return res
         return res.success((cases, else_case))
-{% /tab %}
+```
 {% /code %}
 
 A helper method to determine whether the current token signifies an `ELSE` clause for an `IF` statement.
@@ -298,7 +297,7 @@ A helper method to determine whether the current token signifies an `ELSE` claus
 #### `if_expr_cases(self, case_keyword)`
 
 {% code %}
-{% tab language="python" %}
+```python
 def if_expr_cases(self, case_keyword):
         res = ParseResult()
         cases = []
@@ -369,7 +368,7 @@ def if_expr_cases(self, case_keyword):
             cases.extend(new_cases)
 
         return res.success((cases, else_case))
-{% /tab %}
+```
 {% /code %}
 
 Handles the parsing of the conditional logic and the body of both `IF` and `ELSE IF` (or `ELIF`) blocks. It ensures correct syntax for parentheses, curly braces, and newlines.
@@ -377,7 +376,7 @@ Handles the parsing of the conditional logic and the body of both `IF` and `ELSE
 #### `for_expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def for_expr(self):
         res = ParseResult()
 
@@ -457,15 +456,15 @@ def for_expr(self):
             self.advance()
 
         return res.success(ForNode(var_name, start_value, end_value, step_value, body, False))
-{% /tab %}
+```
 {% /code %}
 
-Parses **`REPEAT`** (for) loops. It expects a variable name, a loop count (implicitly `TIMES`), and a body (either a single statement or multiple statements enclosed in curly braces).
+Parses **REPEAT** (for) loops. It expects a variable name, a loop count (implicitly `TIMES`), and a body (either a single statement or multiple statements enclosed in curly braces).
 
 #### `while_expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def while_expr(self):
         res = ParseResult()
 
@@ -505,10 +504,10 @@ def while_expr(self):
         if res.error: return res
 
         return res.success(WhileNode(condition, body, False))
-{% /tab %}
+```
 {% /code %}
 
-Parses **`WHILE`** loops. It expects a condition and a loop body.
+Parses **WHILE** loops. It expects a condition and a loop body.
 
 ---
 
@@ -517,7 +516,7 @@ Parses **`WHILE`** loops. It expects a condition and a loop body.
 #### `call()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def call(self):
         res = ParseResult()
 
@@ -557,7 +556,7 @@ def call(self):
                 self.advance()
             return res.success(CallNode(atom, arg_nodes))
         return res.success(atom)
-{% /tab %}
+```
 {% /code %}
 
 Handles function calls in Spindle. It parses the function name (which can be an **atom**) and then any arguments passed within parentheses.
@@ -565,7 +564,7 @@ Handles function calls in Spindle. It parses the function name (which can be an 
 #### `atom()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def atom(self):
         res = ParseResult()
         tok = self.current_tok
@@ -630,7 +629,7 @@ def atom(self):
             tok.pos_start, tok.pos_end,
             "Expected int, float, identifier, '+', '-', '(', 'IF','REPEAT UNTIL', 'REPEAT', 'PROCEDURE'"
         ))
-{% /tab %}
+```
 {% /code %}
 
 Parses the most basic elements of Spindle code, including:
@@ -645,7 +644,7 @@ Parses the most basic elements of Spindle code, including:
 #### `list_expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def list_expr(self):
         res = ParseResult()
         element_nodes = []
@@ -692,7 +691,7 @@ def list_expr(self):
         pos_start,
         self.current_tok.pos_end.copy()
         ))
-{% /tab %}
+```
 {% /code %}
 
 Parses **list literals** (e.g., `[1, 2, "hello"]`). It handles the opening and closing square brackets, as well as comma-separated elements within the list.
@@ -706,10 +705,10 @@ The following methods handle the parsing of expressions, respecting operator pre
 #### `power()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def power(self):
         return self.bin_op(self.call, (TT_POW, ), self.factor)
-{% /tab %}
+```
 {% /code %}
 
 Parses expressions involving the **power operator** (`^`). This is noted as "LEGACY" and might indicate it's an older or less frequently used feature.
@@ -717,7 +716,7 @@ Parses expressions involving the **power operator** (`^`). This is noted as "LEG
 #### `factor()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def factor(self):
         res = ParseResult()
         tok = self.current_tok
@@ -730,7 +729,7 @@ def factor(self):
             return res.success(UnaryOpNode(tok, factor))
 
         return self.power()
-{% /tab %}
+```
 {% /code %}
 
 Handles **unary operations** such as positive (`+`) and negative (`-`) signs applied to a number or expression. It then calls `power()` to continue parsing higher-precedence operations.
@@ -738,10 +737,10 @@ Handles **unary operations** such as positive (`+`) and negative (`-`) signs app
 #### `term()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def term(self):
         return self.bin_op(self.factor, (TT_MUL, TT_DIV))
-{% /tab %}
+```
 {% /code %}
 
 Parses **multiplication** (`*`) and **division** (`/`) operations, which have higher precedence than addition and subtraction.
@@ -749,10 +748,10 @@ Parses **multiplication** (`*`) and **division** (`/`) operations, which have hi
 #### `arith_expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def arith_expr(self):
         return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
-{% /tab %}
+```
 {% /code %}
 
 Parses **addition** (`+`) and **subtraction** (`-`) operations.
@@ -760,7 +759,7 @@ Parses **addition** (`+`) and **subtraction** (`-`) operations.
 #### `comp_expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def comp_expr(self):
         res = ParseResult()
 
@@ -782,15 +781,15 @@ def comp_expr(self):
             ))
 
         return res.success(node)
-{% /tab %}
+```
 {% /code %}
 
-Combines expressions with **comparison operators** (`==`, `!=`, `<`, `>`, `<=`, `>=`) and the **logical `NOT`** operator.
+Combines expressions with **comparison operators** (`==`, `!=`, `<`, `>`, `<=`, `>=`) and the **logical NOT** operator.
 
 #### `expr()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def expr(self):
         res = ParseResult()
 
@@ -816,7 +815,7 @@ def expr(self):
             "Expected 'VARIBLE IDENTIFIER', 'IF', 'REPEAT UNTIL', 'REPEAT', 'PROCEDURE', int, float, identifier, '+', '-', '[', or '(. \n Did you wrap an assigned varible in parenthesis?'"
         ))
         return res.success(node)
-{% /tab %}
+```
 {% /code %}
 
 The top-level expression parsing method. It handles:
@@ -828,7 +827,7 @@ The top-level expression parsing method. It handles:
 #### `func_def()`
 
 {% code %}
-{% tab language="python" %}
+```python
 def func_def(self):
         res = ParseResult()
 
@@ -929,7 +928,7 @@ def func_def(self):
         arg_name_toks,
         body, False
         ))
-{% /tab %}
+```
 {% /code %}
 
 Parses **function definitions** (`PROCEDURE`). It handles the function name, parameters within parentheses, and the function body (either in curly braces or separated by newlines).
@@ -941,7 +940,7 @@ Parses **function definitions** (`PROCEDURE`). It handles the function name, par
 #### `bin_op(self, func_a, ops, func_b=None)`
 
 {% code %}
-{% tab language="python" %}
+```python
 def bin_op(self, func_a, ops, func_b=None):
         if func_b == None:
             func_b = func_a
@@ -959,7 +958,7 @@ def bin_op(self, func_a, ops, func_b=None):
             left = BinOpNode(left, op_tok, right)
 
         return res.success(left)
-{% /tab %}
+```
 {% /code %}
 
 A generic helper method for parsing **binary operations** (operations with two operands and one operator in between). It takes two parsing functions (`func_a` and `func_b` for the left and right sides of the operation) and a list of `ops` (operator tokens) to handle. This method is crucial for implementing operator precedence by being called from other parsing methods (e.g., `term`, `arith_expr`, `comp_expr`).

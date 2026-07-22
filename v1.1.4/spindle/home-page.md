@@ -2,28 +2,26 @@
 type: page
 title: Home Page
 listed: true
-slug: home-page
 description: 
 index_title: Home Page
-hidden: 
+hidden: false
 keywords: 
 tags: 
 ---
 
 ---
 
-{% image url="https://uploads.developerhub.io/prod/vJJ9/cwmlheq1vvi4wvq64j6dzdxxlppwp8j19a488y7ipuxgtbhe2ogbd7vn3tlag5w8.png" mode="set" height="200" width="200" %}
-{% /image %}
+{% image url="https://uploads.developerhub.io/prod/vJJ9/cwmlheq1vvi4wvq64j6dzdxxlppwp8j19a488y7ipuxgtbhe2ogbd7vn3tlag5w8.png" width=200 /%}
 
-## Spindle 
+## Spindle
 
-The open-source programming language and learning platform for mastering AP CSP code. Practice, experiment, and learn with real, runnable code inspired by the AP Computer Science Principles exam! 
+The open-source programming language and learning platform for mastering AP CSP code. Practice, experiment, and learn with real, runnable code inspired by the AP Computer Science Principles exam!
 
 ---
 
 Welcome to Spindle's Developer Documentation
 
-{% callout type="info" title="Info" %}
+{% callout title="Info" %}
 Spindle bridges the gap between AP® CSP theory and hands-on programming. Work with live code that mirrors exam syntax and logic—online or natively on your desktop, for free, forever.
 {% /callout %}
 
@@ -37,7 +35,7 @@ Spindle bridges the gap between AP® CSP theory and hands-on programming. Work w
 
 - **Exam-Ready:** Get comfortable with AP CSP-style questions and code in an environment that mimics the real exam.
 - **Accessible for Everyone:** Use Spindle on almost any device—no installation needed for web usage!
-- **Free & Open Source:** We believe learning should be accessible to all. No paywalls, ever.
+- **Free \& Open Source:** We believe learning should be accessible to all. No paywalls, ever.
 - **Community-Powered:** Spindle is built by and for students, educators, and enthusiasts. We welcome your ideas, bug reports, and contributions.
 
 ---
@@ -55,10 +53,10 @@ Spindle bridges the gap between AP® CSP theory and hands-on programming. Work w
 ## 💻 Sample Code
 
 {% code %}
-{% tab language="none" %}
+```none
 # Displays "Hello Spindle!"
 DISPLAY("Hello Spindle!")
-{% /tab %}
+```
 {% /code %}
 
 ---
@@ -100,8 +98,7 @@ DISPLAY("Hello Spindle!")
 - **Advanced Method:**
 - Open a terminal or command prompt.
 - Use `cd` to go to your folder.
-- Run:
-    python shell.py RUN("[FILENAME].spdl")
+- Run: python shell.py RUN("\[FILENAME\].spdl")
 
 ---
 
@@ -117,14 +114,14 @@ We appreciate all contributions—big or small. Contributors are always credited
 
 ---
 
-## 🌐 Community & Support
+## 🌐 Community \& Support
 
 - [Website](https://spdl.netlify.app/)
 - [GitHub Discussions](https://github.com/matthewl580/Spindle/discussions)
 - [Releases](https://github.com/matthewl580/Spindle/releases)
 - [Documentation ](https://spdl.netlify.app/docs/user/)(psst... you're already here! That documentation link will take you to the user documentation.)
 
-{% callout type="info" title="Info" %}
+{% callout title="Info" %}
 Tip: Have a question? Ask in [Discussions](https://github.com/matthewl580/Spindle/discussions) or open an issue.
 {% /callout %}
 
@@ -132,13 +129,10 @@ Tip: Have a question? Ask in [Discussions](https://github.com/matthewl580/Spindl
 
 ## 🧑‍⚖️ Legal Stuff
 
-The Spindle programming language, website, logo, and brand are licensed under the MIT License.
-You fully own all programs you create with Spindle. For more, see the LICENSE file or ask us!
+The Spindle programming language, website, logo, and brand are licensed under the MIT License. You fully own all programs you create with Spindle. For more, see the LICENSE file or ask us!
 
-{% callout type="info" title="The Legal Yada Yada" %}
-Disclaimer:
-"AP CSP" refers to "AP® Computer Science Principles", a trademark of College Board. This project is not affiliated with, endorsed by, or sponsored by College Board.
-AP® is a trademark registered by the College Board, which is not affiliated with, and does not endorse, this project.
+{% callout title="The Legal Yada Yada" %}
+Disclaimer: "AP CSP" refers to "AP® Computer Science Principles", a trademark of College Board. This project is not affiliated with, endorsed by, or sponsored by College Board. AP® is a trademark registered by the College Board, which is not affiliated with, and does not endorse, this project.
 {% /callout %}
 
 ---
